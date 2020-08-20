@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 // import { register } from 'register-service-worker'
+import Login from '../components/Login.vue'
+import Register from '../components/Register.vue'
+import Dashboard from '../components/Dashboard.vue'
 
 Vue.use(VueRouter)
 
@@ -11,21 +14,21 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
-  // {
-  //   path: '/login',
-  //   name: 'Login',
-  //   component: Login
-  // },
-  // {
-  //   path: '/register',
-  //   name: 'Register',
-  //   component: Register
-  // },
-  // {
-  //   path: '/dashboard',
-  //   name: 'Dashboard',
-  //   component: dashboard
-  // },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard
+  },
   {
     path: '/about',
     name: 'About',

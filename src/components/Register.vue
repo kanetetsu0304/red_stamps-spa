@@ -26,8 +26,9 @@
                     name="name"
                     prepend-icon="mdi-account"
                     id="name"
+                    :error-messages="errors.name"
+                    @keydown="clearError('name')"	
                   >
-                    <span class="text-danger" v-if="errors.name">{{ errors.name[0] }}</span>
                   </v-text-field>
 
                   <v-text-field
@@ -37,8 +38,9 @@
                     name="email"
                     prepend-icon="mdi-account"
                     id="email"
+                    :error-messages="errors.email"
+                    @keydown="clearError('email')"
                   >
-                    <span class="text-danger" v-if="errors.email">{{ errors.email[0] }}</span>
                   </v-text-field>
 
                   <v-text-field
@@ -48,8 +50,9 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     id="password"
+                    :error-messages="errors.password"
+                    @keydown="clearError('password')"
                   >
-                    <span class="text-danger" v-if="errors.password">{{ errors.password[0] }}</span>
                   </v-text-field>
 
                   <v-text-field
@@ -59,11 +62,10 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     id="password_confirmation"
+                    :error-messages="errors.password_confirmation"
+                    @keydown="clearError('password_confirmation')"
                   >
-                    <span
-                      class="text-danger"
-                      v-if="errors.password_confirmation"
-                    >{{ errors.password_confirmation[0] }}</span>
+        
                   </v-text-field>
                 </v-form>
               </v-card-text>
@@ -81,7 +83,7 @@
 
 <script>
 import User from "../apis/User";
-import Csrf from "../apis/Csrf";
+
 
 export default {
   props: {
@@ -100,17 +102,16 @@ export default {
   },
   methods: {
     register() {
-      Csrf.getCookie().then(() => {
+     
         User.register(this.form)
-          // .then(() => {
-          //   this.$router.push({ name: "Login" });
-          // })
+          .then(() => {
+            this.$router.push({ name: "Login" });
+          })
 
-          // .catch(error => {
-          //   if (error.response.status === 419) {
-          //     this.errors = error.response.data.errors;
-          //   }
-          // });
+          .catch(error => {
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+            }
       });
     }
   }

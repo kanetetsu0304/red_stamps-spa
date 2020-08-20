@@ -38,26 +38,31 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
-      <Login/>
-      <Register/>
+      <!-- <HelloWorld/> -->
+      <Navigation/>
+      <router-view />
+      <!-- <Login/>
+      <Register/> -->
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-import Login from './components/Login';
-import Register from './components/Register';
+// import HelloWorld from './components/HelloWorld';
+// import Login from './components/Login';
+// import Register from './components/Register';
+import Navigation from './components/Navigation';
+
 
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
-    Login,
-    Register
+    // HelloWorld,
+    // Login,
+    // Register,
+    Navigation
   },
 
   data: () => ({
