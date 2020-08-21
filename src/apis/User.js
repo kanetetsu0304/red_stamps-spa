@@ -17,7 +17,7 @@ export default {
         return Api.post("/logout");
     },
 
-    auth(){
+    async auth() {
         return Api.get("/user");
     }
 };

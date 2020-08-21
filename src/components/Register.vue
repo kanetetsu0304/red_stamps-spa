@@ -27,9 +27,8 @@
                     prepend-icon="mdi-account"
                     id="name"
                     :error-messages="errors.name"
-                    @keydown="clearError('name')"	
-                  >
-                  </v-text-field>
+                    @keydown="clearError('name')"
+                  ></v-text-field>
 
                   <v-text-field
                     type="email"
@@ -40,8 +39,7 @@
                     id="email"
                     :error-messages="errors.email"
                     @keydown="clearError('email')"
-                  >
-                  </v-text-field>
+                  ></v-text-field>
 
                   <v-text-field
                     type="password"
@@ -52,8 +50,7 @@
                     id="password"
                     :error-messages="errors.password"
                     @keydown="clearError('password')"
-                  >
-                  </v-text-field>
+                  ></v-text-field>
 
                   <v-text-field
                     type="password"
@@ -64,9 +61,7 @@
                     id="password_confirmation"
                     :error-messages="errors.password_confirmation"
                     @keydown="clearError('password_confirmation')"
-                  >
-        
-                  </v-text-field>
+                  ></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -83,7 +78,6 @@
 
 <script>
 import User from "../apis/User";
-
 
 export default {
   props: {
@@ -102,17 +96,16 @@ export default {
   },
   methods: {
     register() {
-     
-        User.register(this.form)
-          .then(() => {
-            this.$router.push({ name: "Login" });
-          })
+      User.register(this.form)
+        .then(() => {
+          this.$router.push({ name: "Login" });
+        })
 
-          .catch(error => {
-            if (error.response.status === 422) {
-              this.errors = error.response.data.errors;
-            }
-      });
+        .catch(error => {
+          if (error.response.status === 422) {
+            this.errors = error.response.data.errors;
+          }
+        });
     }
   }
 };

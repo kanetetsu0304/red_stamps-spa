@@ -65,7 +65,7 @@ export default {
     return {
       form: {
         email: "",
-        password: "",
+        password: ""
       },
       errors: []
     };
@@ -74,7 +74,8 @@ export default {
     login() {
       User.login(this.form)
         .then(() => {
-          localStorage.setItem("auth","true");
+          this.$root.$emit("login", true);
+          localStorage.setItem("auth", "true");
           this.$router.push({ name: "Dashboard" });
         })
 
