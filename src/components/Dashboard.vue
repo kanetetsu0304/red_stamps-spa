@@ -1,10 +1,10 @@
 <template>
-  <div class="home col-8 mx-auto py-5 mt-5">
-    <h1>Dashboard</h1>
-    <div class="card">
-      <div class="card-body" v-if="user">
-        <h3>Hello, {{ user.name }}</h3>
-        <span>{{ user.email }}</span>
+  <div class="home col-8 mx-auto py-5 mt-5 red-stamp-list">
+    <h1>Dashnhbhboard</h1>
+    <div>
+      <div v-if="user">
+        <h3>{{ user.name }}</h3>
+        <button />
       </div>
     </div>
   </div>
@@ -25,3 +25,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.red-stamp-list{
+  color: aqua;
+}
+</style>

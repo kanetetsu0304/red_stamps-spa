@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -21,6 +21,8 @@
         />
       </div>
 
+      <Navigation />
+
       <v-spacer></v-spacer>
 
       <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
@@ -30,7 +32,7 @@
     </v-app-bar>
 
     <v-main>
-      <Navigation />
+      <!-- <Navigation /> -->
       <router-view />
     </v-main>
   </v-app>

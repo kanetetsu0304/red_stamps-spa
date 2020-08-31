@@ -5,6 +5,9 @@ import Home from '../views/Home.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Dashboard from '../components/Dashboard.vue'
+import RedStampList from '../components/RedStampList.vue'
+import RedStampDetail from '../components/RedStampDetail.vue'
+import RedStampCreate from '../components/RedStampCreate.vue'
 
 Vue.use(VueRouter)
 
@@ -30,6 +33,24 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/redstamp',
+    name: 'RedStampList',
+    component: RedStampList,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/redstamp/:id',
+    name: 'RedStampDetail',
+    component: RedStampDetail,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/create',
+    name: 'RedStampCreate',
+    component: RedStampCreate,
     meta: { authOnly: true }
   },
   {
@@ -71,7 +92,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (isLoggedIn()) {
       next({
-        path: "/dashboard",
+        path: "/redstamp",
         query: { redirect: to.fullPath }
       });
     } else {

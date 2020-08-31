@@ -76,7 +76,7 @@ export default {
         .then(() => {
           this.$root.$emit("login", true);
           localStorage.setItem("auth", "true");
-          this.$router.push({ name: "Dashboard" });
+          this.$router.push({ name: "RedStampList" });
         })
 
         .catch(error => {
