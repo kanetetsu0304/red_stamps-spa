@@ -18,6 +18,11 @@
           :to="{ name: 'RedStampList' }"
         >Dashboard</router-link>
         <a v-if="isLoggedIn" class="nav-item nav-link" @click.prevent="logout" href="#">Logout</a>
+        <router-link
+          v-if="isLoggedIn"
+          class="nav-item nav-link"
+          :to="{ name: 'Users' }"
+        >みんなの御朱印帳を見る</router-link>
       </ul>
     </div>
   </nav>

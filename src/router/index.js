@@ -8,6 +8,13 @@ import Dashboard from '../components/Dashboard.vue'
 import RedStampList from '../components/RedStampList.vue'
 import RedStampDetail from '../components/RedStampDetail.vue'
 import RedStampCreate from '../components/RedStampCreate.vue'
+import RedStampEdit from '../components/RedStampEdit.vue'
+import Users from '../components/Users.vue'
+import UsersRedStampList from '../components/UsersRedStampList.vue'
+import UsersRedStampDetail from '../components/UsersRedStampDetail.vue'
+
+
+
 
 Vue.use(VueRouter)
 
@@ -51,6 +58,30 @@ const routes = [
     path: '/create',
     name: 'RedStampCreate',
     component: RedStampCreate,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/edit/:id',
+    name: 'RedStampEdit',
+    component: RedStampEdit,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: Users,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/users/:id',
+    name: 'UsersRedStampList',
+    component: UsersRedStampList,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/users/:userId/:id',
+    name: 'UsersRedStampDetail',
+    component: UsersRedStampDetail,
     meta: { authOnly: true }
   },
   {

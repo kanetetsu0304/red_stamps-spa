@@ -1,22 +1,22 @@
 <template>
-  <div class="red-stamp">
-    <div class="red-stamp__top">
-      <p class="red-stamp__top__name">{{ name }}</p>
-      <p class="red-stamp__top__city">{{ prefecture }}</p>
-      <p class="red-stamp__top__prefecture">{{ city }}</p>
+  <div class="users-red-stamp">
+    <div class="users-red-stamp__top">
+      <p class="users-red-stamp__top__name">{{ name }}</p>
+      <p class="users-red-stamp__top__city">{{ prefecture }}</p>
+      <p class="users-red-stamp__top__prefecture">{{ city }}</p>
     </div>
-    <div class="red-stamp__middle">
+    <div class="users-red-stamp__middle">
       <img :src="getImgUrl(image_url)" v-bind:alt="image_url">
     </div>
-    <div class="red-stamp__bottom">
-      <p class="red-stamp__bottom__date">{{ date }}</p>
+    <div class="users-red-stamp__bottom">
+      <p class="users-red-stamp__bottom__date">{{ date }}</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "RedStamp",
+  name: "UsersRedStamp",
   props: {
     name: String,
     city: String,
@@ -27,14 +27,13 @@ export default {
   methods:{
     getImgUrl(pet) {
     return 'http://localhost:8000/' + pet 
-    
   }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.red-stamp {
+.users-red-stamp {
   width: 240px;
   border-radius: 16px;
   background: #777777;

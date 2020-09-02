@@ -12,8 +12,45 @@ export default {
         return Api.get(`/redstamps/${id}`);
     },
 
-    async postImage() {
+    // async postImage(posts) {
+    //     await Csrf.getCookie();
+    //     return Api.post("/redstamps",posts);
+    // },
+
+    async redStampPost(formData, config) {
         await Csrf.getCookie();
-        return Api.post(`/redstamps`);
-    }
+        return Api.post(
+            '/redstamps',
+            formData,
+            config,
+        );
+    },
+
+    async redStampPut(id,formData, config) {
+        await Csrf.getCookie();
+        return Api.put(
+            `/redstamps/${id}`,
+            formData,
+            config,
+        );
+    },
+
+    async redStampEdit(id,puts) {
+        return Api.put(`/redstamps/${id}`,puts);
+    },
+
+    async redStampDelete(id) {
+        return Api.delete(`/redstamps/${id}`);
+    },
+
+    async usersRedStamp(userId) {
+        return Api.get(`/usersRedstamps/${userId}`);
+    },
+
+    async usersRedStampDetail(userId,id) {
+        return Api.get(`/usersRedstamps/${userId}/${id}`);
+    },
+
+
+    
 };

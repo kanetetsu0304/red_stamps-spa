@@ -1,31 +1,29 @@
 <template>
-  <div class="home col-8 mx-auto py-5 mt-5 red-stamp-create">
-    <div class="red-stamp-create__left">
+  <div class="home col-8 mx-auto py-5 mt-5 red-stamp-edit">
+    <div class="red-stamp-edit__left">
       <div>
         <p>
           <input type="file" @change="onImageSelected" />
         </p>
+        <img :src="getImgUrl(puts.image_url)" v-bind:alt="puts.image_url" v-if="!selectedImage">
         <img :src="selectedImage" />
       </div>
     </div>
-    <div class="red-stamp-create__right">
+    <div class="red-stamp-edit__right">
       <div v-for="sanctuary in sanctaries" :key="sanctuary.id">
         <sanctuary :name="sanctuary.name" :id="sanctuary.id" @sanctuary="sanctuarySelected"></sanctuary>
       </div>
       <datepicker
-        class="red-stamp-create__right__date"
+        class="red-stamp-edit__right__date"
         :format="datePickerFormat"
-        v-model="posts.date"
+        v-model="puts.date"
       ></datepicker>
       <v-col>
-        <v-textarea solo name="input-7-4" label v-model="posts.comment"></v-textarea>
+        <v-textarea solo name="input-7-4" label v-model="puts.comment"></v-textarea>
       </v-col>
-      <div class="red-stamp-create__right__btn">
-        <button
-          class="red-stamp-create__right__btn__edit"
-          type="submit"
-          @click.prevent="submit"
-        >投稿する</button>
+      <div class="red-stamp-edit__right__btn">
+        <button class="red-stamp-edit__right__btn__edit" type="submit" @click.prevent="submit">投稿する</button>
+        
       </div>
     </div>
   </div>
@@ -49,7 +47,7 @@ export default {
     return {
       sanctaries: [],
       selectedImage: "",
-      posts: {
+      puts: {
         user_id: "",
         sanctuary_id: "",
         date: "2020-03-04",
@@ -63,22 +61,57 @@ export default {
     SanctuaryApi.sanctuary().then(response => {
       this.sanctaries = response.data;
     });
+    RedStampApi.redStampDetail(this.$route.params.id).then(response => {
+      this.puts = response.data;
+    });
   },
+  // created: function() {
+  //   this.getImage();
+  // },
+  // methods: {
+  //   getImage() {
+  //     RedStampApi.redStamp().then(response => {
+  //       this.images = response.data;
+  //     });
+  //   },
+
+  //   uploadImage() {
+  //     let formData = new FormData();
+  //     formData.append("file", this.file);
+  //     formData.append("comment", this.comment);
+  //     formData.append("date", this.date);
+
+  //     let config = {
+  //       headers: {
+  //         "content-type": "multipart/form-data"
+  //       }
+  //     };
+
+  //     RedStampApi.postImage(formData, config).then(response => {
+  //       this.images = response.data;
+  //       this.getImage();
+  //     });
+  //   }
+  // }
   methods: {
+getImgUrl(pet) {
+    return 'http://localhost:8000/' + pet 
+  },
+
     sanctuarySelected(sanctuary) {
-      this.posts.sanctuary_id = sanctuary;
+      this.puts.sanctuary_id = sanctuary;
     },
 
     datePickerFormat(date) {
       return moment(date).format("yyyy-MM-DD");
     },
 
-    // ユーザが画像を選択した直後に呼ばれるメソッド。
+    //  ユーザが画像を選択した直後に呼ばれるメソッド。
     // ユーザが選択したファイルを読み込んで、this.fileに設定する処理を行う。j
     onImageSelected(event) {
       // 発生したeventからファイル情報を取得
       const file = event.target.files[0];
-      this.posts.file = file;
+      this.puts.file = file;
 
       // これ以降、選択した画像を表示する処理。j
 
@@ -98,15 +131,14 @@ export default {
       r.readAsDataURL(file);
     },
 
-    // 画像と、それに付随する各種譲歩をサーバに送信する。
     submit() {
-      const formatedDate = this.datePickerFormat(this.posts.date);
+      const formatedDate = this.datePickerFormat(this.puts.date);
 
       const formData = new FormData();
-      formData.append("image", this.posts.file); // 先ほど取得した画像データを追加
-      formData.append("comment", this.posts.comment);
+      formData.append("image", this.puts.file); // 先ほど取得した画像データを追加
+      formData.append("comment", this.puts.comment);
       formData.append("date", formatedDate);
-      formData.append("sanctuary_id", this.posts.sanctuary_id);
+      formData.append("sanctuary_id", this.puts.sanctuary_id);
 
       const config = {
         headers: {
@@ -115,16 +147,23 @@ export default {
         }
       };
 
-      RedStampApi.redStampPost(formData, config).then(() => {
-        this.$router.push({ name: "RedStampList" });
-      });
-    }
+      RedStampApi.redStampPut(this.puts.id,formData, config).then(() => {
+        this.$router.push({ name : 'RedStampDetail', params:{ id: this.$route.params.id } });
+      })
+        .catch(error => {
+          if (error.response.status === 422) {
+            this.errors = error.response.data.errors;
+          }
+        });
+
+    },
+
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.red-stamp-create {
+.red-stamp-edit {
   color: $MAIN;
   display: flex;
   justify-content: space-between;

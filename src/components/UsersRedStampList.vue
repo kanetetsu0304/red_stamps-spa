@@ -1,33 +1,33 @@
 <template>
-  <div class="home col-8 mx-auto py-5 mt-5 red-stamp-list">
+  <div class="home col-8 mx-auto py-5 mt-5 users-red-stamp-list">
     <div>
-      <div class="red-stamp-list__head">
-        <div class="red-stamp-list__head__left">
-          <h1 v-if="user" class="red-stamp-list__head__left__name">{{ user.name }}の御朱印一覧</h1>
-          <h2 v-if="user" class="red-stamp-list__head__left__count">{{ count }}枚の御朱印</h2>
+      <div class="users-red-stamp-list__head">
+        <div class="users-red-stamp-list__head__left">
+          <h1 v-if="friend" class="users-red-stamp-list__head__left__name">{{ friend.name }}の御朱印一覧</h1>
+          <h2 v-if="friend" class="users-red-stamp-list__head__left__count">{{ count }}枚の御朱印</h2>
         </div>
-        <div class="red-stamp-list__head__right">
-          <div class="red-stamp-list__head__right__btn">
+        <div class="users-red-stamp-list__head__right">
+          <div class="users-red-stamp-list__head__right__btn">
             <button type="submit" class="add-card__form__button">フォローする</button>
           </div>
-          <div class="red-stamp-list__head__right__link">
+          <div class="users-red-stamp-list__head__right__link">
             <button type="submit" class="add-card__form__button">followings</button>
             <button type="submit" class="add-card__form__button">followers</button>
           </div>
         </div>
       </div>
-      <div class="red-stamp-list__body">
-        <div v-for="redStamp in redStamps" :key="redStamp.id">
+      <div class="users-red-stamp-list__body">
+        <div v-for="usersRedStamp in usersRedStamps" :key="usersRedStamp.id">
           <router-link
-            class="red-stamp-list__body__link nav-item nav-link"
-            :to="{ name : 'RedStampDetail', params : { id: redStamp.id }}"
+            class="users-red-stamp-list__body__link nav-item nav-link"
+            :to="{ name : 'UsersRedStampDetail', params:{ userId: $route.params.id,id: usersRedStamp.id }}"
           >
             <red-stamp
-              :name="redStamp.sanctuary.name"
-              :city="redStamp.sanctuary.city"
-              :prefecture="redStamp.sanctuary.prefecture"
-              :date="redStamp.date"
-              :image_url="redStamp.image_url"
+              :name="usersRedStamp.sanctuary.name"
+              :city="usersRedStamp.sanctuary.city"
+              :prefecture="usersRedStamp.sanctuary.prefecture"
+              :date="usersRedStamp.date"
+              :image_url="usersRedStamp.image_url"
             ></red-stamp>
           </router-link>
         </div>
@@ -42,34 +42,34 @@ import RedStampApi from "../apis/RedStamp";
 import RedStamp from "./RedStamp.vue";
 
 export default {
-  name: "RedStampList",
+  name: "UsersRedStampList",
   components: {
     RedStamp
   },
   data() {
     return {
-      user: null,
-      redStamps: []
+      friend: null,
+      usersRedStamps: []
     };
   },
   mounted() {
-    User.auth().then(response => {
-      this.user = response.data;
+    User.usersDetail(this.$route.params.id).then(response => {
+      this.friend = response.data;
     });
-    RedStampApi.redStamp().then(response => {
-      this.redStamps = response.data;
+    RedStampApi.usersRedStamp(this.$route.params.id).then(response => {
+      this.usersRedStamps = response.data;
     });
   },
   computed: {
     count() {
-      return this.redStamps.length;
+      return this.usersRedStamps.length;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.red-stamp-list {
+.users-red-stamp-list {
   color: $MAIN;
   &__head {
     display: flex;

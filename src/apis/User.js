@@ -19,5 +19,17 @@ export default {
 
     async auth() {
         return Api.get("/user");
-    }
+    },
+
+    async users() {
+        return Api.get("/users");
+    },
+
+    async usersDetail(id) {
+        return Api.get(`/users/${id}`);
+    },
+
+    // async usersRedStamp(id) {
+    //     return Api.get(`/redstamps/${id}`);
+    // },
 };
