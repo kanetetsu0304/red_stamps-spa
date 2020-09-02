@@ -28,16 +28,16 @@ export default {
 
     async redStampPut(id,formData, config) {
         await Csrf.getCookie();
-        return Api.put(
+        return Api.post(
             `/redstamps/${id}`,
             formData,
             config,
         );
     },
 
-    async redStampEdit(id,puts) {
-        return Api.put(`/redstamps/${id}`,puts);
-    },
+    // async redStampEdit(id,puts) {
+    //     return Api.put(`/redstamps/${id}`,puts);
+    // },
 
     async redStampDelete(id) {
         return Api.delete(`/redstamps/${id}`);

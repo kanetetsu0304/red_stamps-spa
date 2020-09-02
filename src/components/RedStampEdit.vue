@@ -143,11 +143,12 @@ getImgUrl(pet) {
       const config = {
         headers: {
           // FormDataでファイルを送信するため、Content-Typeをmultipart/form-dataに設定する。j:
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "multipart/form-data",
+          'X-HTTP-Method-Override': 'PUT',
         }
       };
 
-      RedStampApi.redStampPut(this.puts.id,formData, config).then(() => {
+      RedStampApi.redStampPut(this.puts.id,formData,config).then(() => {
         this.$router.push({ name : 'RedStampDetail', params:{ id: this.$route.params.id } });
       })
         .catch(error => {
