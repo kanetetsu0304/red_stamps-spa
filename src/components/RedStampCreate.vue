@@ -10,7 +10,7 @@
     </div>
     <div class="red-stamp-create__right">
       <div v-for="sanctuary in sanctaries" :key="sanctuary.id">
-        <sanctuary :name="sanctuary.name" :id="sanctuary.id" @sanctuary="sanctuarySelected"></sanctuary>
+        <sanctuary :name="sanctuary.name" :id="sanctuary.id" @sanctuary="sanctuarySelected" :class="{ selected:posts.sanctuary_id ===  sanctuary.id}"></sanctuary>
       </div>
       <datepicker
         class="red-stamp-create__right__date"
@@ -25,7 +25,9 @@
           class="red-stamp-create__right__btn__edit"
           type="submit"
           @click.prevent="submit"
+          v-if="posts.sanctuary_id && posts.date && posts.comment && posts.file"
         >投稿する</button>
+        <p v-else>ddddd</p>
       </div>
     </div>
   </div>
@@ -52,8 +54,8 @@ export default {
       posts: {
         user_id: "",
         sanctuary_id: "",
-        date: "2020-03-04",
-        comment: "postします",
+        date: "",
+        comment: "",
         file: "",
         default: "2020-08-27"
       }
@@ -142,5 +144,10 @@ export default {
       margin: 4px;
     }
   }
+}
+
+.selected{
+  font-size: 20px;
+  color: brown;
 }
 </style>

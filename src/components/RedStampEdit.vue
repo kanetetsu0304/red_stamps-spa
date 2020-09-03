@@ -11,8 +11,9 @@
     </div>
     <div class="red-stamp-edit__right">
       <div v-for="sanctuary in sanctaries" :key="sanctuary.id">
-        <sanctuary :name="sanctuary.name" :id="sanctuary.id" @sanctuary="sanctuarySelected"></sanctuary>
+        <sanctuary :name="sanctuary.name" :id="sanctuary.id" @sanctuary="sanctuarySelected" :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"></sanctuary>
       </div>
+      
       <datepicker
         class="red-stamp-edit__right__date"
         :format="datePickerFormat"
@@ -22,8 +23,8 @@
         <v-textarea solo name="input-7-4" label v-model="puts.comment"></v-textarea>
       </v-col>
       <div class="red-stamp-edit__right__btn">
-        <button class="red-stamp-edit__right__btn__edit" type="submit" @click.prevent="submit">投稿する</button>
-        
+        <button class="red-stamp-edit__right__btn__edit" type="submit" @click.prevent="submit" v-if="puts.comment">投稿する</button>
+        <p v-else>投稿できません</p>
       </div>
     </div>
   </div>
@@ -95,7 +96,7 @@ export default {
   // }
   methods: {
 getImgUrl(pet) {
-    return 'http://localhost:8000/' + pet 
+    return 'http://ec2-52-195-2-179.ap-northeast-1.compute.amazonaws.com:8000/' + pet 
   },
 
     sanctuarySelected(sanctuary) {
@@ -182,5 +183,10 @@ getImgUrl(pet) {
       margin: 4px;
     }
   }
+}
+
+.selected{
+  font-size: 20px;
+  color: brown;
 }
 </style>

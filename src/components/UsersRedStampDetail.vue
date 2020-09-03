@@ -41,7 +41,7 @@ export default {
   },
   methods:{
     getImgUrl(pet) {
-    return 'http://localhost:8000/' + pet 
+    return 'http://ec2-52-195-2-179.ap-northeast-1.compute.amazonaws.com:8000/' + pet 
   },
   // deleteRedStamp() {
   //     RedStampApi.redStampDelete(this.$route.params.id)

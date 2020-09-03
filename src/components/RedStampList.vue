@@ -1,5 +1,5 @@
 <template>
-  <div class="home col-8 mx-auto py-5 mt-5 red-stamp-list">
+  <div class="red-stamp-list">
     <div>
       <div class="red-stamp-list__head">
         <div class="red-stamp-list__head__left">
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="red-stamp-list__body">
-        <div v-for="redStamp in redStamps" :key="redStamp.id">
+        <div v-for="redStamp in redStamps" :key="redStamp.id" class="sss">
           <router-link
             class="red-stamp-list__body__link nav-item nav-link"
             :to="{ name : 'RedStampDetail', params : { id: redStamp.id }}"
@@ -28,6 +28,7 @@
               :prefecture="redStamp.sanctuary.prefecture"
               :date="redStamp.date"
               :image_url="redStamp.image_url"
+              class="red-stamp-list__body__child"
             ></red-stamp>
           </router-link>
         </div>
@@ -71,9 +72,14 @@ export default {
 <style lang="scss" scoped>
 .red-stamp-list {
   color: $MAIN;
+  max-width: 800px;
+    margin: 0 auto;
+    margin-top: 60px;
   &__head {
     display: flex;
     justify-content: space-between;
+    
+    
 
     &__left {
       display: flex;
@@ -106,11 +112,16 @@ export default {
   }
   &__body {
     display: flex;
-    justify-content: flex-start;
+    justify-content:center;
     flex-wrap: wrap;
+    .sss{
+      height: 480px;
+      margin-bottom: -72px;
+    }
     &__link {
       color: $MAIN;
     }
+    
   }
 }
 </style>

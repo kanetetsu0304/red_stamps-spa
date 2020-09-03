@@ -2,11 +2,15 @@
   <div class="red-stamp">
     <div class="red-stamp__top">
       <p class="red-stamp__top__name">{{ name }}</p>
-      <p class="red-stamp__top__city">{{ prefecture }}</p>
-      <p class="red-stamp__top__prefecture">{{ city }}</p>
+      <div class="red-stamp__top__area">
+      <p class="red-stamp__top__area__city">{{ prefecture }}</p>
+      <p class="red-stamp__top__area__prefecture">{{ city }}</p>
+      </div>
     </div>
     <div class="red-stamp__middle">
+      
       <img :src="getImgUrl(image_url)" v-bind:alt="image_url">
+    
     </div>
     <div class="red-stamp__bottom">
       <p class="red-stamp__bottom__date">{{ date }}</p>
@@ -15,6 +19,8 @@
 </template>
 
 <script>
+
+
 export default {
   name: "RedStamp",
   props: {
@@ -26,8 +32,7 @@ export default {
   },
   methods:{
     getImgUrl(pet) {
-    return 'http://localhost:8000/' + pet 
-    
+    return 'http://ec2-52-195-2-179.ap-northeast-1.compute.amazonaws.com:8000/' + pet 
   }
   }
 };
@@ -35,23 +40,58 @@ export default {
 
 <style lang="scss" scoped>
 .red-stamp {
-  width: 240px;
+  position: relative;
+  
   border-radius: 16px;
-  background: #777777;
+  border: 1px solid $MAIN;
   margin: 8px;
-  padding: 16px;
+  padding: 16px 4px;
+  height: 80%;
 
   &__top {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    &__name{
+      font-size: 2vw;
+    }
+    &__area{
+      display: flex;
+      justify-content: space-between;
+       font-size: 1.8vw;
+
+    }
   }
   &__middle {
-    background: cornsilk;
-    
+    width:160px;
+    margin: 0 auto;
+    display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  &::after{
+    content: "";
+  flex: auto;
   }
 
-  img{
-    width: 208px;
+//   &__container.is-empty{
+// width:300px;
+//   height: 0;
+//   padding-top: 0;
+//   padding-bottom: 0;
+//   margin-top: 0;
+//   margin-bottom: 0;
+//   }
+
+ img{
+    width:100%;
+  }
+
+  }
+
+  &__bottom{
+    position: absolute;
+    bottom: 2px;
+
   }
 }
 </style>
