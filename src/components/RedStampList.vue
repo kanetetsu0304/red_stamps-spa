@@ -2,18 +2,19 @@
   <div class="red-stamp-list">
     <div>
       <div class="red-stamp-list__head">
-        <div class="red-stamp-list__head__left">
-          <h1 v-if="user" class="red-stamp-list__head__left__name">{{ user.name }}の御朱印一覧</h1>
-          <h2 v-if="user" class="red-stamp-list__head__left__count">{{ count }}枚の御朱印</h2>
-        </div>
-        <div class="red-stamp-list__head__right">
-          <div class="red-stamp-list__head__right__btn">
-            <button type="submit" class="add-card__form__button">フォローする</button>
-          </div>
-          <div class="red-stamp-list__head__right__link">
-            <button type="submit" class="add-card__form__button">followings</button>
-            <button type="submit" class="add-card__form__button">followers</button>
-          </div>
+        <h1 v-if="user" class="red-stamp-list__head__name">{{ user.name }}の御朱印帳</h1>
+        <p v-if="user" class="red-stamp-list__head__count">{{ count }}枚の御朱印</p>
+        <div class="red-stamp-list__head__btn">
+          <button
+            class="red-stamp-list__head__btn__desc"
+            type="submit"
+            @click.prevent="descRedStamp"
+          >新しい順</button>
+          <button
+            class="red-stamp-list__head__btn__asc"
+            type="submit"
+            @click.prevent="ascRedStamp"
+          >古い順</button>
         </div>
       </div>
       <div class="red-stamp-list__body">
@@ -65,6 +66,18 @@ export default {
     count() {
       return this.redStamps.length;
     }
+  },
+  methods: {
+    ascRedStamp() {
+      RedStampApi.redStampAsc().then(response => {
+        this.redStamps = response.data;
+      });
+    },
+    descRedStamp() {
+      RedStampApi.redStamp().then(response => {
+        this.redStamps = response.data;
+      });
+    }
   }
 };
 </script>
@@ -73,55 +86,53 @@ export default {
 .red-stamp-list {
   color: $MAIN;
   max-width: 800px;
-    margin: 0 auto;
-    margin-top: 60px;
+  margin: 0 auto;
+  margin-top: 60px;
   &__head {
     display: flex;
-    justify-content: space-between;
-    
-    
-
-    &__left {
-      display: flex;
-      flex-direction: column;
-      &__name {
-        font-size: 32px;
-        font-weight: bold;
-      }
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    &__name {
+      font-size: 32px;
+      font-weight: bold;
     }
-    &__right {
+    &__btn {
       display: flex;
-      flex-direction: column;
-      margin-right: 24px;
-      &__btn {
+      align-items: center;
+      justify-content: space-around;
+      width: 372px;
+      &__desc {
         padding: 8px;
-        border: 1px solid black;
-        border-radius: 12px;
+        border: 1px solid;
         width: 120px;
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
       }
-      &__link {
+
+      &__asc {
+        padding: 8px;
+        border: 1px solid;
+        width: 120px;
         display: flex;
-        justify-content: space-between;
-        width: 180px;
-        padding: 12px 0;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
+
   &__body {
     display: flex;
-    justify-content:center;
+    justify-content: center;
     flex-wrap: wrap;
-    .sss{
+    .sss {
       height: 480px;
       margin-bottom: -72px;
     }
     &__link {
       color: $MAIN;
     }
-    
   }
 }
 </style>

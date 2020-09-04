@@ -1,7 +1,7 @@
 <template>
   <div class="friend">
     <div class="friend__top">
-      <p class="friend__top__name">{{ name }}の御朱印帳を見る</p>
+      <p class="friend__top__name">{{ name }}の御朱印帳</p>
     </div>
   </div>
 </template>
@@ -17,20 +17,28 @@ export default {
 
 <style lang="scss" scoped>
 .friend {
-  width: 240px;
-  border-radius: 16px;
-  background: #777777;
-  margin: 8px;
-  padding: 16px;
+  width: 160px;
+    border-radius: 16px;
+    background: #777777;
+    margin: 8px;
+    padding: 16px 8px;
+    display: flex;
+    justify-content: center;
+    color: wheat;
 
   &__top {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+&__name{
+  margin-bottom: 16px;
+    font-size: 12px;
+    width: 100%;
+    margin-bottom: 0;
+    
+}
   }
-  &__middle {
-    background: cornsilk;
-  }
-
+  
   img {
     width: 208px;
   }

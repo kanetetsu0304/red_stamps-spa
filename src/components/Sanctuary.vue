@@ -1,10 +1,12 @@
 <template>
   <div class="sanctuary">
-    <div class="sanctuary__top">
-      <button class="red-stamp-create__right__name" @click.prevent="$emit('sanctuary', id)">
-      <p class="sanctuary__top__name">{{ name }}</p>
-      </button>
-    </div>
+    <button class="sanctuary__btn" @click.prevent="$emit('sanctuary', id)">
+      <p class="sanctuary__name">
+        {{ name }}
+        <br />
+      </p>
+      <p class="sanctuary__area">({{ prefecture }}{{ city }})</p>
+    </button>
   </div>
 </template>
 
@@ -13,15 +15,37 @@ export default {
   name: "Sanctuary",
   props: {
     name: String,
-    id:Number
+    city: String,
+    prefecture: String,
+    id: Number
   },
-  methods:{
-  }
+  methods: {}
 };
 </script>
 
 <style lang="scss" scoped>
 .sanctuary {
-  display: inline;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  padding: 12px 4px;
+  margin-bottom: 16px;
+
+  &__name {
+    font-size: 2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    font-size: 1.7vh;
+  }
+  &__area {
+    font-size: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+  }
 }
 </style>

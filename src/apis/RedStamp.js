@@ -7,6 +7,9 @@ export default {
     async redStamp() {
         return Api.get("/redstamps");
     },
+    async redStampAsc() {
+        return Api.get("/redstampsAsc");
+    },
 
     async redStampDetail(id) {
         return Api.get(`/redstamps/${id}`);

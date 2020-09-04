@@ -53,6 +53,7 @@ export default {
   width: 100%;
   color: $MAIN;
   border-bottom: 1px solid $MAIN;
+  z-index: 100;
   
   &__top{
     width: 12%;

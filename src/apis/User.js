@@ -25,6 +25,10 @@ export default {
         return Api.get("/users");
     },
 
+    async usersAsc() {
+        return Api.get("/usersAsc");
+    },
+
     async usersDetail(id) {
         return Api.get(`/users/${id}`);
     },

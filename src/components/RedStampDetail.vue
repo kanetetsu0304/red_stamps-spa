@@ -1,27 +1,31 @@
 <template>
-  <div class="home col-8 mx-auto py-5 mt-5 red-stamp-detail">
+  <div class="red-stamp-detail">
     <div class="red-stamp-detail__left">
       <div class="red-stamp-detail__left__img">
-        <img :src="getImgUrl(redStamp.image_url)" v-bind:alt="redStamp.image_url">
+        <img :src="getImgUrl(redStamp.image_url)" v-bind:alt="redStamp.image_url" />
       </div>
     </div>
     <div class="red-stamp-detail__right">
-      <div class="red-stamp-detail__right__user" >{{ user.name }}</div>
       <div class="red-stamp-detail__right__name">{{ redStamp.sanctuary.name }}</div>
       <div class="red-stamp-detail__right__area">
         <div class="red-stamp-detail__right__area__prefecture">{{ redStamp.sanctuary.prefecture }}</div>
         <div class="red-stamp-detail__right__area__city">{{ redStamp.sanctuary.city }}</div>
       </div>
-      <div class="red-stamp-detail__right__date">{{ redStamp.date }}</div>
-      <div class="red-stamp-detail__right__comment">{{ redStamp.comment }}</div>
+      <div class="red-stamp-detail__right__user">参拝人 {{ user.name }}</div>
+      <div class="red-stamp-detail__right__date">参拝日 {{ redStamp.date }}</div>
+      <div class="red-stamp-detail__right__comment">コメント {{ redStamp.comment }}</div>
       <div class="red-stamp-detail__right__btn">
         <router-link
-            class="red-stamp-list__body__link nav-item nav-link"
-            :to="{ name : 'RedStampEdit', params : { id: redStamp.id }}"
-          >
-        <button class="red-stamp-detail__right__btn__edit" type="submit">編集する</button>
+          class="red-stamp-detail__right__btn__link"
+          :to="{ name : 'RedStampEdit', params : { id: redStamp.id }}"
+        >
+          <button class="red-stamp-detail__right__btn__link__edit" type="submit">編集する</button>
         </router-link>
-        <button class="red-stamp-detail__right__btn__edit" type="submit" @click.prevent="deleteRedStamp">削除する</button>
+        <button
+          class="red-stamp-detail__right__btn__delete"
+          type="submit"
+          @click.prevent="deleteRedStamp"
+        >削除する</button>
       </div>
     </div>
   </div>
@@ -47,14 +51,14 @@ export default {
       this.redStamp = response.data;
     });
   },
-  methods:{
+  methods: {
     getImgUrl(pet) {
-    return 'http://ec2-52-195-2-179.ap-northeast-1.compute.amazonaws.com:8000/' + pet 
-  },
-  deleteRedStamp() {
+      return "https://redstampapi.naoya-sawaguchi.jp" + pet;
+    },
+    deleteRedStamp() {
       RedStampApi.redStampDelete(this.$route.params.id)
         .then(() => {
-          this.$router.push({ name : 'RedStampList'});
+          this.$router.push({ name: "RedStampList" });
         })
 
         .catch(error => {
@@ -62,9 +66,9 @@ export default {
             this.errors = error.response.data.errors;
           }
         });
+    }
   }
-}
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -72,25 +76,76 @@ export default {
   color: $MAIN;
   display: flex;
   justify-content: space-between;
-  &__left{
-    width:400px;
-    height: 540px;
-    background: darkblue;
-    color: white;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 72px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  &__left {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    align-items: center;
+    padding: 16px;
+    &__img {
+      width: 320px;
+      margin: 0 auto;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+
+      img {
+        width: 100%;
+      }
+    }
   }
-  &__right{
-    width: 40%;
-    /* display: flex; */
+  &__right {
+    width: 320px;
     padding: 24px;
-    &__area{
+    margin: 0 auto;
+    &__name {
+      font-size: 6vh;
       display: flex;
-      justify-content: flex-start;
+      justify-content: center;
     }
-    &__btn{
+    &__area {
       display: flex;
-      justify-content: flex-start;
+      justify-content: center;
+      font-size: 4vh;
     }
-    
+    &__user {
+      font-size: 4vh;
+    }
+
+    &__date {
+      font-size: 4vh;
+    }
+    &__comment {
+      font-size: 3vh;
+    }
+
+    &__btn {
+      display: flex;
+      justify-content: space-around;
+      height: 32px;
+      margin-top: 32px;
+      &__link {
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1px solid black;
+        border: 1px solid black;
+      }
+      &__delete {
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+      }
+    }
   }
 }
 </style>

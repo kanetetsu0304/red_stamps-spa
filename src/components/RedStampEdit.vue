@@ -1,30 +1,78 @@
 <template>
-  <div class="home col-8 mx-auto py-5 mt-5 red-stamp-edit">
+  <div class="red-stamp-edit">
     <div class="red-stamp-edit__left">
-      <div>
+      <div class="red-stamp-edit__left__img-container">
         <p>
           <input type="file" @change="onImageSelected" />
         </p>
-        <img :src="getImgUrl(puts.image_url)" v-bind:alt="puts.image_url" v-if="!selectedImage">
+        <div class="red-stamp-edit__left__img-container__img">
+        <img :src="getImgUrl(puts.image_url)" v-bind:alt="puts.image_url" v-if="!selectedImage" />
         <img :src="selectedImage" />
+        </div>
+      </div>
+      <div class="red-stamp-edit__left__sanctuary-container">
+        <div
+          v-for="sanctuary in sanctaries"
+          :key="sanctuary.id"
+          class="red-stamp-edit__left__child"
+        >
+          <sanctuary
+            :name="sanctuary.name"
+            :city="sanctuary.city"
+            :prefecture="sanctuary.prefecture"
+            :id="sanctuary.id"
+            @sanctuary="sanctuarySelected"
+            :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"
+          ></sanctuary>
+        </div>
       </div>
     </div>
-    <div class="red-stamp-edit__right">
-      <div v-for="sanctuary in sanctaries" :key="sanctuary.id">
-        <sanctuary :name="sanctuary.name" :id="sanctuary.id" @sanctuary="sanctuarySelected" :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"></sanctuary>
+    <!-- <div>
+        <p>
+          <input type="file" @change="onImageSelected" />
+        </p>
+        <img :src="getImgUrl(puts.image_url)" v-bind:alt="puts.image_url" v-if="!selectedImage" />
+        <img :src="selectedImage" />
       </div>
-      
-      <datepicker
-        class="red-stamp-edit__right__date"
-        :format="datePickerFormat"
-        v-model="puts.date"
-      ></datepicker>
-      <v-col>
-        <v-textarea solo name="input-7-4" label v-model="puts.comment"></v-textarea>
-      </v-col>
+    </div>-->
+    <!-- <div class="red-stamp-edit__right"> -->
+    <!-- <div v-for="sanctuary in sanctaries" :key="sanctuary.id">
+        <sanctuary
+          :name="sanctuary.name"
+          :id="sanctuary.id"
+          @sanctuary="sanctuarySelected"
+          :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"
+        ></sanctuary>
+    </div>-->
+    <div class="red-stamp-edit__right">
+      <div class="red-stamp-edit__right__date-container">
+        <datepicker
+          class="red-stamp-edit__right__date-container__date"
+          :format="datePickerFormat"
+          v-model="puts.date"
+          placeholder="こちらをクリック"
+        ></datepicker>
+      </div>
+      <div class="red-stamp-edit__right__comment-container">
+        <v-col>
+          <v-textarea
+            solo
+            name="input-7-4"
+            label="こちらに記入"
+            v-model="puts.comment"
+            class="red-stamp-edit__right__comment-container__comment"
+          ></v-textarea>
+        </v-col>
+      </div>
+
       <div class="red-stamp-edit__right__btn">
-        <button class="red-stamp-edit__right__btn__edit" type="submit" @click.prevent="submit" v-if="puts.comment">投稿する</button>
-        <p v-else>投稿できません</p>
+        <button
+          class="red-stamp-edit__right__btn__edit"
+          type="submit"
+          @click.prevent="submit"
+          v-if="puts.sanctuary_id && puts.date && puts.comment && puts.file"
+        >投稿する</button>
+        <p v-else class="red-stamp-create__right__btn__cannot-edit">まだ投稿できません</p>
       </div>
     </div>
   </div>
@@ -95,9 +143,9 @@ export default {
   //   }
   // }
   methods: {
-getImgUrl(pet) {
-    return 'http://ec2-52-195-2-179.ap-northeast-1.compute.amazonaws.com:8000/' + pet 
-  },
+    getImgUrl(pet) {
+      return "https://redstampapi.naoya-sawaguchi.jp" + pet;
+    },
 
     sanctuarySelected(sanctuary) {
       this.puts.sanctuary_id = sanctuary;
@@ -145,21 +193,23 @@ getImgUrl(pet) {
         headers: {
           // FormDataでファイルを送信するため、Content-Typeをmultipart/form-dataに設定する。j:
           "Content-Type": "multipart/form-data",
-          'X-HTTP-Method-Override': 'PUT',
+          "X-HTTP-Method-Override": "PUT"
         }
       };
 
-      RedStampApi.redStampPut(this.puts.id,formData,config).then(() => {
-        this.$router.push({ name : 'RedStampDetail', params:{ id: this.$route.params.id } });
-      })
+      RedStampApi.redStampPut(this.puts.id, formData, config)
+        .then(() => {
+          this.$router.push({
+            name: "RedStampDetail",
+            params: { id: this.$route.params.id }
+          });
+        })
         .catch(error => {
           if (error.response.status === 422) {
             this.errors = error.response.data.errors;
           }
         });
-
-    },
-
+    }
   }
 };
 </script>
@@ -169,24 +219,138 @@ getImgUrl(pet) {
   color: $MAIN;
   display: flex;
   justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 72px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+
   &__left {
-    width: 400px;
-    height: 540px;
-    background: darkblue;
-    color: white;
-  }
-  &__right {
-    /* display: flex; */
-    padding: 24px;
-    &__name {
-      border: 1px solid black;
-      margin: 4px;
+    width: 360px;
+    padding: 32px 8px;
+    margin: 0 auto;
+
+    &__img-container {
+      margin: 0 auto;
+      align-items: center;
+      padding: 32px 12px 16px;
+      border: 1px solid;
+      position: relative;
+
+      &::before {
+        content: "STEP1  投稿する御朱印を選んでください";
+        position: absolute;
+        top: 4px;
+        left: 8px;
+      }
+      &__img {
+        width: 320px;
+        margin: 0 auto;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    &__sanctuary-container {
+      padding: 32px 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      border: 1px solid;
+      position: relative;
+      margin-top: 24px;
+      &::before {
+        content: "STEP2  参拝した神社・寺を選んでください";
+        position: absolute;
+        top: 4px;
+        left: 8px;
+      }
+    }
+    &__child {
+      width: 32%;
     }
   }
-}
+  &__right {
+    width: 360px;
+    padding: 32px 8px;
+    margin: 0 auto;
 
-.selected{
-  font-size: 20px;
-  color: brown;
+    &__date-container {
+      border: 1px solid;
+      padding-top: 20px;
+      position: relative;
+      &::before {
+        content: "STEP3  参拝日を選んでください";
+        position: absolute;
+        top: 4px;
+        left: 8px;
+      }
+
+      &__date {
+        color: red;
+        padding: 4px;
+        padding-left: 24px;
+
+        div > input {
+          width: 100%;
+        }
+      }
+    }
+
+    &__comment-container {
+      border: 1px solid;
+      padding-top: 20px;
+      margin-top: 24px;
+      position: relative;
+      padding: 32px 16px 0px;
+      &::before {
+        content: "STEP4  コメントを記入してください";
+        position: absolute;
+        top: 4px;
+        left: 8px;
+      }
+      &__comment {
+        height: 160px;
+      }
+    }
+
+    &__btn {
+      &__edit {
+        width: 100%;
+        border: 1px solid;
+        margin-top: 24px;
+        position: relative;
+        margin-bottom: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 48px;
+        background: saddlebrown;
+      }
+
+      &__cannot-edit {
+        width: 100%;
+        border: 1px solid;
+        margin-top: 24px;
+        position: relative;
+        margin-bottom: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 48px;
+      }
+    }
+  }
+
+  .selected {
+    font-size: 20px;
+    background: black;
+    color: red;
+  }
 }
 </style>
