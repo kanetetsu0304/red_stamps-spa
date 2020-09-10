@@ -12,6 +12,11 @@ import RedStampEdit from '../components/RedStampEdit.vue'
 import Users from '../components/Users.vue'
 import UsersRedStampList from '../components/UsersRedStampList.vue'
 import UsersRedStampDetail from '../components/UsersRedStampDetail.vue'
+import Followings from '../components/Followings.vue'
+import Followers from '../components/Followers.vue'
+import UsersFollowings from '../components/UsersFollowings.vue'
+import UsersFollowers from '../components/UsersFollowers.vue'
+
 
 
 
@@ -82,6 +87,30 @@ const routes = [
     path: '/users/:userId/:id',
     name: 'UsersRedStampDetail',
     component: UsersRedStampDetail,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/followings',
+    name: 'Followings',
+    component: Followings,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/followers',
+    name: 'Followers',
+    component: Followers,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/usersfollowings/:id',
+    name: 'UsersFollowings',
+    component: UsersFollowings,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/usersfollowers/:id',
+    name: 'UsersFollowers',
+    component: UsersFollowers,
     meta: { authOnly: true }
   },
   {

@@ -18,7 +18,7 @@
           <sanctuary
             :name="sanctuary.name"
             :city="sanctuary.city"
-            :prefecture="sanctuary.prefecture"
+            :prefecture="sanctuary.prefecture.name"
             :id="sanctuary.id"
             @sanctuary="sanctuarySelected"
             :class="{ selected:posts.sanctuary_id ===  sanctuary.id}"

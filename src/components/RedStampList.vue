@@ -2,8 +2,34 @@
   <div class="red-stamp-list">
     <div>
       <div class="red-stamp-list__head">
-        <h1 v-if="user" class="red-stamp-list__head__name">{{ user.name }}の御朱印帳</h1>
-        <p v-if="user" class="red-stamp-list__head__count">{{ count }}枚の御朱印</p>
+        <h1 v-if="user" class="red-stamp-list__head__top">{{ user.name }}の御朱印帳</h1>
+        <div class="red-stamp-list__head__middle">
+          <div class="red-stamp-list__head__middle__center">
+            <p
+              v-if="user"
+              class="red-stamp-list__head__middle__center__count"
+            >{{ count }}枚の御朱印</p>
+            <div class="red-stamp-list__head__middle__center__home">御朱印<br>グラム</div>
+            <router-link
+            class="red-stamp-list__head__middle__center__followings"
+              :to="{ name : 'UsersFollowings', params : { id: user.id } }"
+            >
+              <button
+                class="red-stamp-list__head__middle__center__followings__btn"
+                type="submit"
+              >フォロー 10人</button>
+            </router-link>
+            <router-link
+              class="red-stamp-list__head__middle__center__followers"
+              :to="{ name : 'UsersFollowers', params : { id: user.id } }"
+            >
+              <button
+                class="red-stamp-list__head__middle__center__followers__btn"
+                type="submit"
+              >フォロワー 12人</button>
+            </router-link>
+          </div>
+        </div>
         <div class="red-stamp-list__head__btn">
           <button
             class="red-stamp-list__head__btn__desc"
@@ -11,7 +37,7 @@
             @click.prevent="descRedStamp"
           >新しい順</button>
           <button
-            class="red-stamp-list__head__btn__asc"
+            class="red-stamp-list__head__btn__desc"
             type="submit"
             @click.prevent="ascRedStamp"
           >古い順</button>
@@ -26,7 +52,7 @@
             <red-stamp
               :name="redStamp.sanctuary.name"
               :city="redStamp.sanctuary.city"
-              :prefecture="redStamp.sanctuary.prefecture"
+              :prefecture="redStamp.sanctuary.prefecture.name"
               :date="redStamp.date"
               :image_url="redStamp.image_url"
               class="red-stamp-list__body__child"
@@ -51,7 +77,9 @@ export default {
   data() {
     return {
       user: null,
-      redStamps: []
+      redStamps: [],
+      followings:[],
+      followers:[]
     };
   },
   mounted() {
@@ -61,7 +89,22 @@ export default {
     RedStampApi.redStamp().then(response => {
       this.redStamps = response.data;
     });
+    // User.userFollowings(this.redStamp.user_id).then(response => {
+    //   this.followings = response.data;
+    // });
+    // User.userFollowers(15).then(response =>{
+    //   this.followers = response.data;
+    // })
+
   },
+  // updated(){
+  //   User.userFollowings(this.user.id).then(response => {
+  //     this.followings = response.data;
+  //   });
+  //   User.userFollowers(15).then(response =>{
+  //     this.followers = response.data;
+  //   })
+  // },
   computed: {
     count() {
       return this.redStamps.length;
@@ -93,9 +136,106 @@ export default {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    &__name {
-      font-size: 32px;
+    &__top {
+      font-size: 28px;
       font-weight: bold;
+    }
+    &__middle {
+      height: 160px;
+      &__center {
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &__count {
+          margin-bottom: 8px;
+        }
+        &__home{
+          display: flex;
+          
+    justify-content: center;
+    align-items: center;
+    background: crimson;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: white;
+
+        }
+        &__follow {
+          width: 84px;
+          margin-bottom: 8px;
+
+          &__btn {
+            border: 1px solid black;
+            font-size: 12px;
+            padding: 4px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: darkcyan;
+          }
+          &__status {
+            border: 1px solid black;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 4px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: cadetblue;
+            color: cornsilk;
+          }
+        }
+        &__unfollow {
+          width: 84px;
+          margin-bottom: 8px;
+
+          &__btn {
+            border: 1px solid black;
+            font-size: 10px;
+            padding: 4px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: darkred;
+          }
+          &__status {
+            border: 1px solid black;
+            margin-bottom: 0;
+            font-size: 12px;
+            padding: 4px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: darkred;
+            color: white;
+          }
+        }
+        &__followings {
+          color: black;
+
+          display: block;
+          // &__btn{
+          //   width: 84px;
+          // display: block;
+          &__btn {
+            font-size: 12px;
+          }
+          // }
+        }
+        &__followers {
+          color: black;
+
+          display: block;
+          &__btn {
+            font-size: 12px;
+          }
+        }
+      }
     }
     &__btn {
       display: flex;

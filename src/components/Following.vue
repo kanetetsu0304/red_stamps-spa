@@ -1,29 +1,29 @@
 <template>
-  <div class="friend" v-if="user.id !== friendId">
-    <div class="friend__top">
-      <p class="friend__top__name">{{ name }}の御朱印帳</p>
+  <div class="following">
+    <div class="following__top">
+      <p class="following__top__name">{{ users[following - 1].name }}の御朱印帳</p>
     </div>
   </div>
 </template>
 
 <script>
 import User from "../apis/User";
+
 export default {
-  name: "Friend",
+  name: "Following",
   props: {
-    name: String,
-    friendId:Number
+    following: Number,
   },
   data() {
     return {
-      user:null
+      users:{},
     };
   },
-  mounted(){
-    User.auth().then(response => {
-      this.user = response.data;
-      });
-  }
+  mounted() {
+    User.usersAsc(this.following).then(response => {
+      this.users = response.data;
+    });
+  },
 };
 </script>
 

@@ -14,12 +14,14 @@
         </div>
   
     <div v-for="friend in users" :key="friend.id">
+      <!-- <router-link v-if="user.id === friend.id" :to="{ name : 'RedStampList'}"/> -->
       <router-link
         class="users__body__link nav-item nav-link"
         :to="{ name : 'UsersRedStampList', params : { id: friend.id }}"
       >
         <friend
-          :name="friend.name"
+          :name="friend.name" 
+          :friendId="friend.id"
         ></friend>
       </router-link>
     </div>
@@ -38,15 +40,26 @@ export default {
   },
   data() {
     return {
-      users: {}
+      user:null,
+      users: {},
     };
+  },
+
+   watch(){
+    if(this.$route.params.id === this.user.id){
+      this.$router.push({ name: "RedStampList" });
+      }
   },
 
   mounted() {
     User.users().then(response => {
       this.users = response.data;
-    });
+      });
+    User.auth().then(response => {
+      this.user = response.data;
+      });
   },
+  
   methods: {
     ascUser() {
       User.usersAsc().then(response => {

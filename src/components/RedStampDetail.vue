@@ -8,7 +8,7 @@
     <div class="red-stamp-detail__right">
       <div class="red-stamp-detail__right__name">{{ redStamp.sanctuary.name }}</div>
       <div class="red-stamp-detail__right__area">
-        <div class="red-stamp-detail__right__area__prefecture">{{ redStamp.sanctuary.prefecture }}</div>
+        <div class="red-stamp-detail__right__area__prefecture">{{ redStamp.sanctuary.prefecture.name }}</div>
         <div class="red-stamp-detail__right__area__city">{{ redStamp.sanctuary.city }}</div>
       </div>
       <div class="red-stamp-detail__right__user">参拝人 {{ user.name }}</div>
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     getImgUrl(pet) {
-      return "https://redstampapi.naoya-sawaguchi.jp" + pet;
+      return "http://localhost:8000/" + pet;
     },
     deleteRedStamp() {
       RedStampApi.redStampDelete(this.$route.params.id)

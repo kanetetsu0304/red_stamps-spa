@@ -19,7 +19,7 @@
           <sanctuary
             :name="sanctuary.name"
             :city="sanctuary.city"
-            :prefecture="sanctuary.prefecture"
+            :prefecture="sanctuary.prefecture.name"
             :id="sanctuary.id"
             @sanctuary="sanctuarySelected"
             :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"
@@ -70,7 +70,7 @@
           class="red-stamp-edit__right__btn__edit"
           type="submit"
           @click.prevent="submit"
-          v-if="puts.sanctuary_id && puts.date && puts.comment && puts.file"
+          v-if="puts.sanctuary_id && puts.date && puts.comment && puts.image_url"
         >投稿する</button>
         <p v-else class="red-stamp-create__right__btn__cannot-edit">まだ投稿できません</p>
       </div>
@@ -144,7 +144,7 @@ export default {
   // }
   methods: {
     getImgUrl(pet) {
-      return "https://redstampapi.naoya-sawaguchi.jp" + pet;
+      return "http://localhost:8000/" + pet;
     },
 
     sanctuarySelected(sanctuary) {

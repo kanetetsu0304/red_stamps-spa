@@ -36,4 +36,24 @@ export default {
     // async usersRedStamp(id) {
     //     return Api.get(`/redstamps/${id}`);
     // },
+
+    async userFollowings(id) {
+        return Api.get(`/users/followings/${id}/`);
+    },
+
+    async userFollowers(id) {
+        return Api.get(`/users/followers/${id}/`);
+    },
+
+    async userFollow(response) {
+        return Api.post(`/users/follow`,response);
+    },
+
+    async userUnfollow(userId,followUserId) {
+        return Api.delete(`/users/unfollow/${userId}/${followUserId}/`);
+    },
+
+    async userFollowed(userId,followUserId) {
+        return Api.get(`/users/followed/${userId}/${followUserId}/`);
+    },
 };

@@ -50,6 +50,10 @@ export default {
         return Api.get(`/usersRedstamps/${userId}`);
     },
 
+    async usersRedStampAsc(userId) {
+        return Api.get(`/usersRedstampsAsc/${userId}`);
+    },
+
     async usersRedStampDetail(userId,id) {
         return Api.get(`/usersRedstamps/${userId}/${id}`);
     },

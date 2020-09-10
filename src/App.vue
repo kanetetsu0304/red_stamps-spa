@@ -1,13 +1,14 @@
 <template>
   <v-app>
     
-
+<div class="main">
     <v-main>
       
       <Navigation/>
       <router-view />
       
     </v-main>
+</div>
   </v-app>
 </template>
 
@@ -31,3 +32,13 @@ export default {
   }),
 };
 </script>
+
+<style lang="scss" scoped>
+ .main{
+   font-weight: bold;
+   
+    // padding-bottom: 80px;
+    // background: black;
+    // color: white;
+ }
+</style>

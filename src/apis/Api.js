@@ -1,7 +1,7 @@
 import axios from "axios";
 
 let Api = axios.create({
-    baseURL: "https://redstampapi.naoya-sawaguchi.jp/api"
+    baseURL: "http://localhost:8000/api"
 });
 
 Api.defaults.withCredentials = true;

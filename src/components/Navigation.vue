@@ -3,12 +3,11 @@
     <div class="navigation__top">
       <router-link class="navigation__top__brand" to="/">
         御朱印
-        <br />グラム
       </router-link>
     </div>
     <div class="navigation__menu">
     <router-link v-if="!isLoggedIn" class="navigation__menu__child" :to="{ name: 'Login' }" :class="{ beforelogin:!isLoggedIn}">ログイン</router-link>
-    <router-link v-if="!isLoggedIn" class="navigation__menu__child" :to="{ name: 'Register' }" :class="{ beforelogin:!isLoggedIn}">館員登録</router-link>
+    <router-link v-if="!isLoggedIn" class="navigation__menu__child" :to="{ name: 'Register' }" :class="{ beforelogin:!isLoggedIn}">会員登録</router-link>
     <router-link v-if="isLoggedIn" class="navigation__menu__child" :to="{ name: 'RedStampList' }">My御朱印帳</router-link>
     <router-link v-if="isLoggedIn" class="navigation__menu__child" :to="{ name: 'Users' }">皆の御朱印帳</router-link>
     <router-link v-if="isLoggedIn" class="navigation__menu__child" :to="{ name: 'RedStampCreate' }">投稿する</router-link>
@@ -64,6 +63,9 @@ export default {
   align-items: center;
   font-size:2vw;
   color: $MAIN;
+  &__brand{
+    color: seashell;;
+  }
 
   }
   &__menu{

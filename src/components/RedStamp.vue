@@ -3,8 +3,8 @@
     <div class="red-stamp__top">
       <p class="red-stamp__top__name">{{ name }}</p>
       <div class="red-stamp__top__area">
-        <p class="red-stamp__top__area__city">{{ prefecture }}</p>
-        <p class="red-stamp__top__area__prefecture">{{ city }}</p>
+        <p class="red-stamp__top__area__prefecture">{{ prefecture }}</p>
+        <p class="red-stamp__top__area__city">{{ city }}</p>
       </div>
     </div>
     <div class="red-stamp__middle">
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     getImgUrl(pet) {
-      return "https://redstampapi.naoya-sawaguchi.jp" + pet;
+      return "http://localhost:8000/" + pet;
     }
   }
 };
@@ -49,12 +49,12 @@ export default {
     flex-direction: column;
     align-items: center;
     &__name {
-      font-size: 2vw;
+      font-size: 16px;
     }
     &__area {
       display: flex;
       justify-content: space-between;
-      font-size: 1.8vw;
+      font-size: 12px;
     }
   }
   &__middle {

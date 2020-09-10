@@ -26,7 +26,7 @@ export default {
   },
   methods:{
     getImgUrl(pet) {
-    return 'https://redstampapi.naoya-sawaguchi.jp' + pet 
+    return 'http://localhost:8000/' + pet 
   }
   }
 };
