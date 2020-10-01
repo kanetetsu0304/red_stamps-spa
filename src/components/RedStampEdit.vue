@@ -1,78 +1,86 @@
 <template>
-  <div class="red-stamp-edit">
-    <div class="red-stamp-edit__left">
-      <div class="red-stamp-edit__left__img-container">
-        <p>
-          <input type="file" @change="onImageSelected" />
-        </p>
-        <div class="red-stamp-edit__left__img-container__img">
-        <img :src="getImgUrl(puts.image_url)" v-bind:alt="puts.image_url" v-if="!selectedImage" />
-        <img :src="selectedImage" />
+  <div class="red-stamp__top">
+    <p class="red-stamp__top__top">御朱印編集画面</p>
+    <div class="red-stamp-edit">
+      <div class="red-stamp-edit__left">
+        <div class="red-stamp-edit__left__img-container">
+          <p>
+            <input type="file" @change="onImageSelected" />
+          </p>
+          <div class="red-stamp-edit__left__img-container__img">
+            <img :src="getImgUrl(puts.image_url)" v-bind:alt="puts.image_url" v-if="!selectedImage" />
+            <img :src="selectedImage" />
+          </div>
+        </div>
+        <div class="red-stamp-edit__left__sanctuary-container">
+          <div class="red-stamp-edit__left__sanctuary-btn-container">
+            <button
+              class="red-stamp-edit__left__sanctuary-btn"
+              type="submit"
+              @click.prevent="ascSanctuary"
+            >北から</button>
+            <button
+              class="red-stamp-edit__left__sanctuary-btn"
+              type="submit"
+              @click.prevent="descSanctuary"
+            >南から</button>
+            <button
+              class="red-stamp-edit__left__sanctuary-btn"
+              type="submit"
+              @click.prevent="tokyoSanctuary"
+            >東京</button>
+            <button
+              class="red-stamp-edit__left__sanctuary-btn"
+              type="submit"
+              @click.prevent="kyotoSanctuary"
+            >京都</button>
+          </div>
+          <div
+            v-for="sanctuary in sanctaries"
+            :key="sanctuary.id"
+            class="red-stamp-edit__left__child"
+          >
+            <sanctuary
+              :name="sanctuary.name"
+              :city="sanctuary.city"
+              :prefecture="sanctuary.prefecture.name"
+              :id="sanctuary.id"
+              @sanctuary="sanctuarySelected"
+              :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"
+            ></sanctuary>
+          </div>
         </div>
       </div>
-      <div class="red-stamp-edit__left__sanctuary-container">
-        <div
-          v-for="sanctuary in sanctaries"
-          :key="sanctuary.id"
-          class="red-stamp-edit__left__child"
-        >
-          <sanctuary
-            :name="sanctuary.name"
-            :city="sanctuary.city"
-            :prefecture="sanctuary.prefecture.name"
-            :id="sanctuary.id"
-            @sanctuary="sanctuarySelected"
-            :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"
-          ></sanctuary>
+      <div class="red-stamp-edit__right">
+        <div class="red-stamp-edit__right__date-container">
+          <datepicker
+            class="red-stamp-edit__right__date-container__date"
+            :format="datePickerFormat"
+            v-model="puts.date"
+            placeholder="こちらをクリック"
+          ></datepicker>
         </div>
-      </div>
-    </div>
-    <!-- <div>
-        <p>
-          <input type="file" @change="onImageSelected" />
-        </p>
-        <img :src="getImgUrl(puts.image_url)" v-bind:alt="puts.image_url" v-if="!selectedImage" />
-        <img :src="selectedImage" />
-      </div>
-    </div>-->
-    <!-- <div class="red-stamp-edit__right"> -->
-    <!-- <div v-for="sanctuary in sanctaries" :key="sanctuary.id">
-        <sanctuary
-          :name="sanctuary.name"
-          :id="sanctuary.id"
-          @sanctuary="sanctuarySelected"
-          :class="{ selected:puts.sanctuary_id ===  sanctuary.id}"
-        ></sanctuary>
-    </div>-->
-    <div class="red-stamp-edit__right">
-      <div class="red-stamp-edit__right__date-container">
-        <datepicker
-          class="red-stamp-edit__right__date-container__date"
-          :format="datePickerFormat"
-          v-model="puts.date"
-          placeholder="こちらをクリック"
-        ></datepicker>
-      </div>
-      <div class="red-stamp-edit__right__comment-container">
-        <v-col>
-          <v-textarea
-            solo
-            name="input-7-4"
-            label="こちらに記入"
-            v-model="puts.comment"
-            class="red-stamp-edit__right__comment-container__comment"
-          ></v-textarea>
-        </v-col>
-      </div>
+        <div class="red-stamp-edit__right__comment-container">
+          <v-col>
+            <v-textarea
+              solo
+              name="input-7-4"
+              label="こちらに記入"
+              v-model="puts.comment"
+              class="red-stamp-edit__right__comment-container__comment"
+            ></v-textarea>
+          </v-col>
+        </div>
 
-      <div class="red-stamp-edit__right__btn">
-        <button
-          class="red-stamp-edit__right__btn__edit"
-          type="submit"
-          @click.prevent="submit"
-          v-if="puts.sanctuary_id && puts.date && puts.comment && puts.image_url"
-        >投稿する</button>
-        <p v-else class="red-stamp-create__right__btn__cannot-edit">まだ投稿できません</p>
+        <div class="red-stamp-edit__right__btn">
+          <button
+            class="red-stamp-edit__right__btn__edit"
+            type="submit"
+            @click.prevent="submit"
+            v-if="puts.sanctuary_id && puts.date && puts.comment && puts.image_url"
+          >投稿する</button>
+          <p v-else class="red-stamp-edit__right__btn__cannot-edit">まだ投稿できません</p>
+        </div>
       </div>
     </div>
   </div>
@@ -86,7 +94,7 @@ import moment from "moment/moment";
 import Sanctuary from "./Sanctuary.vue";
 
 export default {
-  name: "RedStampCreate",
+  name: "RedStampEdit",
   components: {
     Datepicker,
     Sanctuary
@@ -107,7 +115,7 @@ export default {
     };
   },
   mounted() {
-    SanctuaryApi.sanctuary().then(response => {
+    SanctuaryApi.sanctuaryAsc().then(response => {
       this.sanctaries = response.data;
     });
     RedStampApi.redStampDetail(this.$route.params.id).then(response => {
@@ -145,6 +153,26 @@ export default {
   methods: {
     getImgUrl(pet) {
       return "http://localhost:8000/" + pet;
+    },
+    ascSanctuary() {
+      SanctuaryApi.sanctuaryAsc().then(response => {
+        this.sanctaries = response.data;
+      });
+    },
+    descSanctuary() {
+      SanctuaryApi.sanctuaryDesc().then(response => {
+        this.sanctaries = response.data;
+      });
+    },
+    tokyoSanctuary(){
+      SanctuaryApi.sanctuaryTokyo().then(response => {
+        this.sanctaries = response.data;
+      });
+    },
+    kyotoSanctuary(){
+      SanctuaryApi.sanctuaryKyoto().then(response => {
+        this.sanctaries = response.data;
+      });
     },
 
     sanctuarySelected(sanctuary) {
@@ -215,19 +243,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.red-stamp__top__top {
+  max-width: 920px;
+  margin: 0 auto;
+  margin-top: 72px;
+  text-align: center;
+  font-size: 28px;
+}
+
 .red-stamp-edit {
   color: $MAIN;
   display: flex;
   justify-content: space-between;
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 72px;
   margin-bottom: 40px;
   flex-wrap: wrap;
-
+margin-top:16px;
   &__left {
     width: 360px;
-    padding: 32px 8px;
+    padding: 0 8px;
     margin: 0 auto;
 
     &__img-container {
@@ -264,6 +299,7 @@ export default {
       border: 1px solid;
       position: relative;
       margin-top: 24px;
+      margin-bottom: 24px;
       &::before {
         content: "STEP2  参拝した神社・寺を選んでください";
         position: absolute;
@@ -271,13 +307,29 @@ export default {
         left: 8px;
       }
     }
+    &__sanctuary-btn-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0 16px;
+    }
+    &__sanctuary-btn {
+      width: 100%;
+      border: 1px solid black;
+      padding: -13px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      height: 32px;
+    }
     &__child {
       width: 32%;
     }
   }
   &__right {
     width: 360px;
-    padding: 32px 8px;
+    padding: 0 8px;
     margin: 0 auto;
 
     &__date-container {
@@ -330,7 +382,8 @@ export default {
         justify-content: center;
         align-items: center;
         height: 48px;
-        background: saddlebrown;
+        background:crimson;
+        color: white;
       }
 
       &__cannot-edit {

@@ -1,4 +1,8 @@
 <template>
+<div class="red-stamp__top">
+    <p class="red-stamp__top__top">
+      {{ friend.name }}の御朱印
+    </p>
   <div class="users-red-stamp-detail">
     <div class="users-red-stamp-detail__left">
       <div class="users-red-stamp-detail__left__img">
@@ -6,16 +10,24 @@
       </div>
     </div>
     <div class="users-red-stamp-detail__right">
-      <div class="users-red-stamp-detail__right__name">{{ usersRedStamp.sanctuary }}</div>
-      <div class="users-red-stamp-detail__right__area">
-        <div class="users-red-stamp-detail__right__area__prefecture">{{ usersRedStamp.sanctuary.prefecture.name }}</div>
-        <div class="users-red-stamp-detail__right__area__city">{{ usersRedStamp.sanctuary.city }}</div>
+      <div class="users-red-stamp-detail__right__user">
+        こちらは  {{ usersRedStamp.date }}  に<br/>{{ usersRedStamp.sanctuary.name }}({{ usersRedStamp.sanctuary.prefecture.name }}{{ usersRedStamp.sanctuary.city }})で
+        <br />頂いた御朱印です。
+        <br />
+        {{ usersRedStamp.comment }}
       </div>
-      <div class="users-red-stamp-detail__right__user">参拝人 {{ user.name }}</div>
-      <div class="users-red-stamp-detail__right__date">参拝日 {{ usersRedStamp.date }}</div>
-      <div class="users-red-stamp-detail__right__comment">コメント {{ usersRedStamp.comment }}</div>
+      <router-link
+        class="users-red-stamp-detail__right__btn__link"
+        :to="{ name : 'UsersRedStampList', params : { id: friend.id }}"
+      >
+        <button
+          class="users-red-stamp-detail__right__btn__link__edit"
+          type="submit"
+        >{{ friend.name }}の<br>御朱印帳に戻る</button>
+      </router-link>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -26,13 +38,13 @@ export default {
   name: "UsersRedStampDetail",
   data() {
     return {
-      user: null,
+      friend: null,
       usersRedStamp: []
     };
   },
   mounted() {
     User.usersDetail(this.$route.params.userId).then(response => {
-      this.user = response.data;
+      this.friend = response.data;
     });
     RedStampApi.usersRedStampDetail(this.$route.params.userId,this.$route.params.id).then(response => {
       this.usersRedStamp = response.data;
@@ -59,6 +71,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.red-stamp__top__top{
+  max-width: 920px;
+  margin: 0 auto;
+  margin-top: 72px;
+  text-align: center;
+    font-size: 28px;
+}
+
 .users-red-stamp-detail {
  color: $MAIN;
   display: flex;
@@ -66,7 +86,6 @@ export default {
   align-items: center;
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 72px;
   margin-bottom: 40px;
   flex-wrap: wrap;
   &__left {
@@ -91,6 +110,9 @@ export default {
     width: 320px;
     padding: 24px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     &__name {
       font-size: 6vh;
       display: flex;
@@ -102,7 +124,7 @@ export default {
       font-size: 4vh;
     }
     &__user {
-      font-size: 4vh;
+      font-size: 3vh;
     }
 
     &__date {
@@ -114,16 +136,23 @@ export default {
 
     &__btn {
       display: flex;
-      justify-content: space-around;
-      height: 32px;
-      margin-top: 32px;
+      justify-content: centerc;
+      margin: 0 auto;
+      height: 50px;
+      position: absolute;
+      bottom: -100px;
+      left: 72px;
+      width: 80%;
       &__link {
-        width: 40%;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 1px solid black;
         border: 1px solid black;
+        padding: 0 24px;
+        border-radius: 16px;
+        text-align: center;
+        margin-top: 24px;
       }
       &__delete {
         width: 40%;

@@ -11,6 +11,14 @@ export default {
         return Api.get("/redstampsAsc");
     },
 
+    async redStampTokyo(id){
+        return Api.get(`/redstampsTokyo/${id}`)
+    },
+
+    async redStampKyoto(id){
+        return Api.get(`/redstampsKyoto/${id}`)
+    },
+
     async redStampDetail(id) {
         return Api.get(`/redstamps/${id}`);
     },

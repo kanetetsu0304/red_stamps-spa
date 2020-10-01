@@ -1,19 +1,25 @@
 <template>
+<div class="red-stamp__top">
+    <p class="red-stamp__top__top">
+      {{ user.name }}の御朱印
+    </p>
   <div class="red-stamp-detail">
     <div class="red-stamp-detail__left">
       <div class="red-stamp-detail__left__img">
         <img :src="getImgUrl(redStamp.image_url)" v-bind:alt="redStamp.image_url" />
       </div>
     </div>
+
     <div class="red-stamp-detail__right">
-      <div class="red-stamp-detail__right__name">{{ redStamp.sanctuary.name }}</div>
-      <div class="red-stamp-detail__right__area">
-        <div class="red-stamp-detail__right__area__prefecture">{{ redStamp.sanctuary.prefecture.name }}</div>
-        <div class="red-stamp-detail__right__area__city">{{ redStamp.sanctuary.city }}</div>
+      <div class="red-stamp-detail__right__user">
+        こちらは  {{ redStamp.date }}  に
+        <br />
+        {{ redStamp.sanctuary.name }}({{ redStamp.sanctuary.prefecture.name }}{{ redStamp.sanctuary.city }})で
+        <br>頂いた御朱印です。
+        <br />
+        {{ redStamp.comment }}
       </div>
-      <div class="red-stamp-detail__right__user">参拝人 {{ user.name }}</div>
-      <div class="red-stamp-detail__right__date">参拝日 {{ redStamp.date }}</div>
-      <div class="red-stamp-detail__right__comment">コメント {{ redStamp.comment }}</div>
+
       <div class="red-stamp-detail__right__btn">
         <router-link
           class="red-stamp-detail__right__btn__link"
@@ -27,8 +33,17 @@
           @click.prevent="deleteRedStamp"
         >削除する</button>
       </div>
+      <div class="red-stamp-detail__right__back-btn">
+        <router-link
+          class="red-stamp-detail__right__back-btn__link"
+          :to="{ name : 'RedStampList'}"
+        >
+          <button class="red-stamp-detail__right__back-btn__link__edit" type="submit">My御朱印帳に戻る</button>
+        </router-link>
+      </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -72,6 +87,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.red-stamp__top__top{
+  max-width: 920px;
+  margin: 0 auto;
+  margin-top: 72px;
+  text-align: center;
+    font-size: 28px;
+}
+
 .red-stamp-detail {
   color: $MAIN;
   display: flex;
@@ -79,7 +102,6 @@ export default {
   align-items: center;
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 72px;
   margin-bottom: 40px;
   flex-wrap: wrap;
   &__left {
@@ -101,7 +123,6 @@ export default {
     }
   }
   &__right {
-    width: 320px;
     padding: 24px;
     margin: 0 auto;
     &__name {
@@ -115,7 +136,7 @@ export default {
       font-size: 4vh;
     }
     &__user {
-      font-size: 4vh;
+      font-size: 3vh;
     }
 
     &__date {
@@ -127,23 +148,40 @@ export default {
 
     &__btn {
       display: flex;
-      justify-content: space-around;
+      justify-content:space-between ;
       height: 32px;
       margin-top: 32px;
       &__link {
-        width: 40%;
+        width: 48%;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 1px solid black;
         border: 1px solid black;
+        border-radius: 8px;
       }
       &__delete {
-        width: 40%;
+        width: 48%;
         display: flex;
         justify-content: center;
         align-items: center;
         border: 1px solid black;
+         border-radius: 8px;
+      }
+    }
+
+    &__back-btn {
+      display: flex;
+      height: 32px;
+      margin-top: 32px;
+      &__link {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1px solid black;
+        border: 1px solid black;
+         border-radius: 8px;
       }
     }
   }

@@ -12,10 +12,14 @@ import RedStampEdit from '../components/RedStampEdit.vue'
 import Users from '../components/Users.vue'
 import UsersRedStampList from '../components/UsersRedStampList.vue'
 import UsersRedStampDetail from '../components/UsersRedStampDetail.vue'
-import Followings from '../components/Followings.vue'
-import Followers from '../components/Followers.vue'
+// import Followings from '../components/Followings.vue'
+// import Followers from '../components/Followers.vue'
 import UsersFollowings from '../components/UsersFollowings.vue'
 import UsersFollowers from '../components/UsersFollowers.vue'
+import RedStampBook from '../components/RedStampBook.vue'
+import RedStampBookEdit from '../components/RedStampBookEdit.vue'
+import RedStampBookCreate from '../components/RedStampBookCreate.vue'
+import UsersRedStampBook from '../components/UsersRedStampBook.vue'
 
 
 
@@ -89,18 +93,18 @@ const routes = [
     component: UsersRedStampDetail,
     meta: { authOnly: true }
   },
-  {
-    path: '/followings',
-    name: 'Followings',
-    component: Followings,
-    meta: { authOnly: true }
-  },
-  {
-    path: '/followers',
-    name: 'Followers',
-    component: Followers,
-    meta: { authOnly: true }
-  },
+  // {
+  //   path: '/followings',
+  //   name: 'Followings',
+  //   component: Followings,
+  //   meta: { authOnly: true }
+  // },
+  // {
+  //   path: '/followers',
+  //   name: 'Followers',
+  //   component: Followers,
+  //   meta: { authOnly: true }
+  // },
   {
     path: '/usersfollowings/:id',
     name: 'UsersFollowings',
@@ -111,6 +115,30 @@ const routes = [
     path: '/usersfollowers/:id',
     name: 'UsersFollowers',
     component: UsersFollowers,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/profile',
+    name: 'RedStampBook',
+    component: RedStampBook,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/profile/edit',
+    name: 'RedStampBookEdit',
+    component: RedStampBookEdit,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/profile/create',
+    name: 'RedStampBookCreate',
+    component: RedStampBookCreate,
+    meta: { authOnly: true }
+  },
+  {
+    path: '/usersprofile/:id',
+    name: 'UsersRedStampBook',
+    component: UsersRedStampBook,
     meta: { authOnly: true }
   },
   {

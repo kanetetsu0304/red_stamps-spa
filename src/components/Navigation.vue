@@ -11,7 +11,7 @@
     <router-link v-if="isLoggedIn" class="navigation__menu__child" :to="{ name: 'RedStampList' }">My御朱印帳</router-link>
     <router-link v-if="isLoggedIn" class="navigation__menu__child" :to="{ name: 'Users' }">皆の御朱印帳</router-link>
     <router-link v-if="isLoggedIn" class="navigation__menu__child" :to="{ name: 'RedStampCreate' }">投稿する</router-link>
-    <a v-if="isLoggedIn" class="navigation__menu__child" @click.prevent="logout" href="#">ログアウト</a>
+    <a v-if="isLoggedIn" class="navigation__menu__logout" @click.prevent="logout" href="#">ログアウト</a>
 
     </div>
   </div>
@@ -55,7 +55,7 @@ export default {
   z-index: 100;
   
   &__top{
-    width: 12%;
+    width: 16%;
   height: 100%;
   background-color: brown;
   display: flex;
@@ -70,15 +70,26 @@ export default {
   }
   &__menu{
     display: flex;
-    width: 88%;
+    width: 84%;
     // font-size: 3vh 3vw;
     &__child{
       display: flex;
       justify-content: center;
       align-items: center;
       background: cadetblue;
-      width: 25%;
-      font-size:2.5vw;
+      width:30%;
+      font-size:2.0vw;
+      border-right: 1px solid black;
+      color: $MAIN;
+    }
+
+    &__logout{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: cadetblue;
+      width: 20%;
+      font-size:2.0vw;
       border-right: 1px solid black;
       color: $MAIN;
     }

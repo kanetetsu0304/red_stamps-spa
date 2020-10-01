@@ -36,6 +36,7 @@ export default {
 <style lang="scss" scoped>
  .main{
    font-weight: bold;
+   font-family: “STKaiti”, “ヒラギノ明朝 Pro W3”, “Hiragino Mincho Pro”, serif;
    
     // padding-bottom: 80px;
     // background: black;

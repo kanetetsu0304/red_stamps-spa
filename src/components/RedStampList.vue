@@ -2,14 +2,32 @@
   <div class="red-stamp-list">
     <div>
       <div class="red-stamp-list__head">
-        <h1 v-if="user" class="red-stamp-list__head__top">{{ user.name }}の御朱印帳</h1>
+        <div v-if="redStampBook.length !== 0">{{ redStampBook[0].introduce }}</div>
+        <div v-else>↓名前をクリックして御朱印帳を登録</div>
+        <router-link
+        v-if="redStampBook.length === 0"
+            class="red-stamp-list__head__middle__center__followings"
+              :to="{ name : 'RedStampBookCreate' }"
+            >
+        <h1 class="red-stamp-list__head__top">{{ user.name }}の御朱印帳</h1>
+        </router-link>
+        <router-link
+        v-else
+            class="red-stamp-list__head__middle__center__followings"
+              :to="{ name : 'RedStampBook' }"
+            >
+        <h1  class="red-stamp-list__head__top">{{ user.name }}の御朱印帳</h1>
+        </router-link>
         <div class="red-stamp-list__head__middle">
+          <div class="red-stamp-list__head__middle__left">
+          <img :src="getImgUrl(redStampBook[0].front_image_url)" v-if="redStampBook.length !== 0" />
+          </div>
           <div class="red-stamp-list__head__middle__center">
             <p
-              v-if="user"
+              
               class="red-stamp-list__head__middle__center__count"
             >{{ count }}枚の御朱印</p>
-            <div class="red-stamp-list__head__middle__center__home">御朱印<br>グラム</div>
+            <div class="red-stamp-list__head__middle__center__home">M y<br>御朱印帳</div>
             <router-link
             class="red-stamp-list__head__middle__center__followings"
               :to="{ name : 'UsersFollowings', params : { id: user.id } }"
@@ -17,7 +35,7 @@
               <button
                 class="red-stamp-list__head__middle__center__followings__btn"
                 type="submit"
-              >フォロー 10人</button>
+              >フォロー {{ countFollowings }}人</button>
             </router-link>
             <router-link
               class="red-stamp-list__head__middle__center__followers"
@@ -26,8 +44,11 @@
               <button
                 class="red-stamp-list__head__middle__center__followers__btn"
                 type="submit"
-              >フォロワー 12人</button>
+              >フォロワー {{ countFollowers }}人</button>
             </router-link>
+          </div>
+          <div class="red-stamp-list__head__middle__left" >
+          <img :src="getImgUrl(redStampBook[0].back_image_url)" v-if="redStampBook.length !== 0"/>
           </div>
         </div>
         <div class="red-stamp-list__head__btn">
@@ -41,6 +62,16 @@
             type="submit"
             @click.prevent="ascRedStamp"
           >古い順</button>
+          <button
+            class="red-stamp-list__head__btn__desc"
+            type="submit"
+            @click.prevent="tokyoRedStamp"
+          >東京</button>
+          <button
+            class="red-stamp-list__head__btn__desc"
+            type="submit"
+            @click.prevent="kyotoRedStamp"
+          >京都</button>
         </div>
       </div>
       <div class="red-stamp-list__body">
@@ -67,7 +98,9 @@
 <script>
 import User from "../apis/User";
 import RedStampApi from "../apis/RedStamp";
+import RedStampBookApi from "../apis/RedStampBook";
 import RedStamp from "./RedStamp.vue";
+
 
 export default {
   name: "RedStampList",
@@ -78,8 +111,9 @@ export default {
     return {
       user: null,
       redStamps: [],
-      followings:[],
-      followers:[]
+      redStampBook:null,
+      countFollowings:null,
+      countFollowers:null,
     };
   },
   mounted() {
@@ -89,14 +123,24 @@ export default {
     RedStampApi.redStamp().then(response => {
       this.redStamps = response.data;
     });
-    // User.userFollowings(this.redStamp.user_id).then(response => {
-    //   this.followings = response.data;
-    // });
-    // User.userFollowers(15).then(response =>{
-    //   this.followers = response.data;
-    // })
-
+    RedStampBookApi.redStampBook().then(response => {
+     this.redStampBook = response.data;
+    });
   },
+  updated(){
+    User.countUserFollowings(this.user.id).then(response => {
+     this.countFollowings = response.data;
+    });
+    User.countUserFollowers(this.user.id).then(response => {
+     this.countFollowers = response.data;
+    });
+  },
+ 
+  // updated(){
+  //   RedStampBookApi.redStampBook().then(response => {
+  //     this.redStampBook = response.data;
+  //   });
+  // },
   // updated(){
   //   User.userFollowings(this.user.id).then(response => {
   //     this.followings = response.data;
@@ -111,6 +155,9 @@ export default {
     }
   },
   methods: {
+    getImgUrl(pet) {
+      return "http://localhost:8000/" + pet;
+    },
     ascRedStamp() {
       RedStampApi.redStampAsc().then(response => {
         this.redStamps = response.data;
@@ -118,6 +165,16 @@ export default {
     },
     descRedStamp() {
       RedStampApi.redStamp().then(response => {
+        this.redStamps = response.data;
+      });
+    },
+    tokyoRedStamp(){
+     RedStampApi.redStampTokyo(this.user.id).then(response => {
+        this.redStamps = response.data;
+      });
+    },
+    kyotoRedStamp(){
+     RedStampApi.redStampKyoto(this.user.id).then(response => {
         this.redStamps = response.data;
       });
     }
@@ -142,16 +199,27 @@ export default {
     }
     &__middle {
       height: 160px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &__left{
+        width: 80px;
+        img{
+          width: 100%;
+        }
+      }
       &__center {
         width: 100px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 8px;
         &__count {
           margin-bottom: 8px;
         }
         &__home{
           display: flex;
+
           
     justify-content: center;
     align-items: center;
@@ -159,6 +227,7 @@ export default {
     padding: 4px 8px;
     border-radius: 8px;
     color: white;
+    text-align: center;
 
         }
         &__follow {
@@ -249,6 +318,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 4px;
       }
 
       &__asc {
@@ -258,6 +328,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 4px;
       }
     }
   }

@@ -3,8 +3,24 @@
   <div class="users-red-stamp-list">
     <div>
       <div class="users-red-stamp-list__head">
-        <h1 v-if="friend" class="users-red-stamp-list__head__top">{{ friend.name }}の御朱印帳</h1>
+        <div v-if="usersRedStampBook.length !== 0">{{ usersRedStampBook[0].introduce }}</div>
+        <div
+        v-if="usersRedStampBook.length === 0"
+            class="users-red-stamp-list__head__middle__center__followings"
+            >
+        <h1 class="users-red-stamp-list__head__top">{{ friend.name }}の御朱印帳</h1>
+        </div>
+        <router-link
+        v-else
+            class="users-red-stamp-list__head__middle__center__followings"
+              :to="{ name : 'UsersRedStampBook', params : { id: friend.id }}"
+            >
+        <h1 class="users-red-stamp-list__head__top">{{ friend.name }}の御朱印帳</h1>
+        </router-link>
         <div class="users-red-stamp-list__head__middle">
+          <div class="users-red-stamp-list__head__middle__left">
+          <img :src="getImgUrl(usersRedStampBook[0].front_image_url)" v-if="usersRedStampBook.length !== 0" />
+          </div>
           <div class="users-red-stamp-list__head__middle__center">
             <p
               v-if="friend"
@@ -36,7 +52,7 @@
               <button
                 class="users-red-stamp-list__head__middle__center__followings__btn"
                 type="submit"
-              >フォロー 10人</button>
+              >フォロー {{ countFollowings}}人</button>
             </router-link>
             <router-link
               class="users-red-stamp-list__head__middle__center__followers"
@@ -45,11 +61,14 @@
               <button
                 class="users-red-stamp-list__head__middle__center__followers__btn"
                 type="submit"
-              >フォロワー 12人</button>
+              >フォロワー {{ countFollowers}}人</button>
             </router-link>
           </div>
+          <div class="users-red-stamp-list__head__middle__left">
+          <img :src="getImgUrl(usersRedStampBook[0].front_image_url)" v-if="usersRedStampBook.length !== 0" />
+          </div>
         </div>
-        <div class="users-red-stamp-list__head__btn">
+        <div class="users-red-stamp-list__head__btn" >
           <button
             class="users-red-stamp-list__head__btn__desc"
             type="submit"
@@ -60,6 +79,17 @@
             type="submit"
             @click.prevent="ascUsersRedStamp"
           >古い順</button>
+          <button
+            class="users-red-stamp-list__head__btn__desc"
+            type="submit"
+            @click.prevent="tokyoRedStamp"
+          >東京</button>
+          <button
+            class="users-red-stamp-list__head__btn__desc"
+            type="submit"
+            @click.prevent="kyotoRedStamp"
+          >京都</button>
+        </div>
         </div>
       </div>
       <div class="users-red-stamp-list__body">
@@ -80,12 +110,12 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import User from "../apis/User";
 import RedStampApi from "../apis/RedStamp";
+import RedStampBookApi from "../apis/RedStampBook";
 import RedStamp from "./RedStamp.vue";
 
 export default {
@@ -98,13 +128,16 @@ export default {
       friend: null,
       user: null,
       usersRedStamps: [],
+      usersRedStampBook: null,
       follow: {
         user_id: "",
         follow_user_id: ""
       },
       followed: null,
       isFollowed: true,
-      isUnfollowed: false
+      isUnfollowed: false,
+      countFollowings:null,
+      countFollowers:null,
     };
   },
   mounted() {
@@ -117,13 +150,19 @@ export default {
     RedStampApi.usersRedStamp(this.$route.params.id).then(response => {
       this.usersRedStamps = response.data;
     });
-    // User.userFollowed(15,14).then(response => {
-    //   this.followed = response.data;
-    //   });
+    RedStampBookApi.usersRedStampBook(this.$route.params.id).then(response => {
+     this.usersRedStampBook = response.data;
+    });
   },
   updated() {
     User.userFollowed(this.user.id, this.friend.id).then(response => {
       this.followed = response.data;
+    });
+    User.countUserFollowings(this.$route.params.id).then(response => {
+      this.countFollowings = response.data;
+    });
+    User.countUserFollowers(this.$route.params.id).then(response => {
+      this.countFollowers = response.data;
     });
   },
   computed: {
@@ -132,6 +171,9 @@ export default {
     }
   },
   methods: {
+    getImgUrl(pet) {
+      return "http://localhost:8000/" + pet;
+    },
     ascUsersRedStamp() {
       RedStampApi.usersRedStampAsc(this.$route.params.id).then(response => {
         this.usersRedStamps = response.data;
@@ -139,6 +181,16 @@ export default {
     },
     descUsersRedStamp() {
       RedStampApi.usersRedStamp(this.$route.params.id).then(response => {
+        this.usersRedStamps = response.data;
+      });
+    },
+    tokyoRedStamp(){
+     RedStampApi.redStampTokyo(this.$route.params.id).then(response => {
+        this.usersRedStamps = response.data;
+      });
+    },
+    kyotoRedStamp(){
+     RedStampApi.redStampKyoto(this.$route.params.id).then(response => {
         this.usersRedStamps = response.data;
       });
     },
@@ -175,11 +227,21 @@ export default {
     }
     &__middle {
       height: 160px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &__left{
+        width: 80px;
+        img{
+          width: 100%;
+        }
+      }
       &__center {
         width: 100px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 8px;
         &__count {
           margin-bottom: 8px;
         }
@@ -271,6 +333,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 4px;
       }
 
       &__asc {
@@ -280,6 +343,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 4px;
       }
     }
   }

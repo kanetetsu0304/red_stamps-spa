@@ -56,4 +56,12 @@ export default {
     async userFollowed(userId,followUserId) {
         return Api.get(`/users/followed/${userId}/${followUserId}/`);
     },
+
+    async countUserFollowings(id) {
+        return Api.get(`/users/countfollowings/${id}/`);
+    },
+
+    async countUserFollowers(id) {
+        return Api.get(`/users/countfollowers/${id}/`);
+    },
 };
